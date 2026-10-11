@@ -30,26 +30,26 @@ jobs:
 
       - name: Get LTW
         run: |
-          cd app_pojavlauncher/libs
+          cd app_orynlauncher/libs
           curl -fL --retry 3 https://github.com/PojavLauncherTeam/LTW/releases/latest/download/ltw-release.aar -o ltw-release.aar
 
       - name: Get JRE 8
         run: |
-          mkdir -p app_pojavlauncher/src/main/assets/components/jre
+          mkdir -p app_orynlauncher/src/main/assets/components/jre
           curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-multiarch/releases/download/rolling/jre8-pojav.zip -o /tmp/jre8-pojav.zip
-          unzip -oq /tmp/jre8-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre
+          unzip -oq /tmp/jre8-pojav.zip -d app_orynlauncher/src/main/assets/components/jre
 
       - name: Get JRE17
         run: |
-          mkdir -p app_pojavlauncher/src/main/assets/components/jre-new
+          mkdir -p app_orynlauncher/src/main/assets/components/jre-new
           curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-17-25/releases/download/rolling/jre17-pojav.zip -o /tmp/jre17-pojav.zip
-          unzip -oq /tmp/jre17-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre-new
+          unzip -oq /tmp/jre17-pojav.zip -d app_orynlauncher/src/main/assets/components/jre-new
 
       - name: Get JRE21
         run: |
-          mkdir -p app_pojavlauncher/src/main/assets/components/jre-21
+          mkdir -p app_orynlauncher/src/main/assets/components/jre-21
           curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-17-25/releases/download/rolling/jre21-pojav.zip -o /tmp/jre21-pojav.zip
-          unzip -oq /tmp/jre21-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre-21
+          unzip -oq /tmp/jre21-pojav.zip -d app_orynlauncher/src/main/assets/components/jre-21
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -72,22 +72,22 @@ jobs:
       - name: Build Google Play .aab
         if: github.repository_owner == 'PojavLauncherTeam' && github.ref_name == 'v3_openjdk'
         run: |
-          gradle :app_pojavlauncher:bundleGplay
-          mv app_pojavlauncher/build/outputs/bundle/gplay/app_pojavlauncher-gplay.aab out/app-gplay.aab
+          gradle :app_orynlauncher:bundleGplay
+          mv app_orynlauncher/build/outputs/bundle/gplay/app_orynlauncher-gplay.aab out/app-gplay.aab
 
       - name: Build Debug .apk
         run: |
           # Build the launcher
-          gradle :app_pojavlauncher:assembleDebug
-          mv app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk out/OrynLauncher-debug.apk
+          gradle :app_orynlauncher:assembleDebug
+          mv app_orynlauncher/build/outputs/apk/debug/app_orynlauncher-debug.apk out/OrynLauncher-debug.apk
 
       - name: Build APK without runtime
         run: |
-          rm -r app_pojavlauncher/src/main/assets/components/jre
-          rm -r app_pojavlauncher/src/main/assets/components/jre-new
-          rm -r app_pojavlauncher/src/main/assets/components/jre-21
+          rm -r app_orynlauncher/src/main/assets/components/jre
+          rm -r app_orynlauncher/src/main/assets/components/jre-new
+          rm -r app_orynlauncher/src/main/assets/components/jre-21
           gradle assembleDebug
-          mv app_pojavlauncher/build/outputs/apk/debug/app_pojavlauncher-debug.apk out/OrynLauncher-debug-no-runtime.apk
+          mv app_orynlauncher/build/outputs/apk/debug/app_orynlauncher-debug.apk out/OrynLauncher-debug-no-runtime.apk
       - name: Gen md5sums
         run: |
           md5sum out/OrynLauncher-debug.apk > out/OrynLauncher-debug.md5
