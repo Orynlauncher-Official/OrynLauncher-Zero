@@ -30,39 +30,26 @@ jobs:
 
       - name: Get LTW
         run: |
-          apt update && apt install wget
           cd app_pojavlauncher/libs
-          wget https://github.com/PojavLauncherTeam/LTW/releases/latest/download/ltw-release.aar
+          curl -fL --retry 3 https://github.com/PojavLauncherTeam/LTW/releases/latest/download/ltw-release.aar -o ltw-release.aar
 
       - name: Get JRE 8
-        uses: dawidd6/action-download-artifact@v9
-        with:
-          workflow: build.yml
-          path: app_pojavlauncher/src/main/assets/components/jre
-          workflow_conclusion: success
-          repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: buildjre8
-          name: jre8-pojav
+        run: |
+          mkdir -p app_pojavlauncher/src/main/assets/components/jre
+          curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-multiarch/releases/download/rolling/jre8-pojav.zip -o /tmp/jre8-pojav.zip
+          unzip -oq /tmp/jre8-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre
 
       - name: Get JRE17
-        uses: dawidd6/action-download-artifact@v9
-        with:
-          workflow: build.yml
-          path: app_pojavlauncher/src/main/assets/components/jre-new
-          workflow_conclusion: success
-          repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: buildjre17-21
-          name: jre17-pojav
+        run: |
+          mkdir -p app_pojavlauncher/src/main/assets/components/jre-new
+          curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-17-25/releases/download/rolling/jre17-pojav.zip -o /tmp/jre17-pojav.zip
+          unzip -oq /tmp/jre17-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre-new
 
       - name: Get JRE21
-        uses: dawidd6/action-download-artifact@v9
-        with:
-          workflow: build.yml
-          path: app_pojavlauncher/src/main/assets/components/jre-21
-          workflow_conclusion: success
-          repo: PojavLauncherTeam/android-openjdk-build-multiarch
-          branch: buildjre17-21
-          name: jre21-pojav
+        run: |
+          mkdir -p app_pojavlauncher/src/main/assets/components/jre-21
+          curl -fL --retry 3 https://github.com/MojoLauncher/android-openjdk-build-17-25/releases/download/rolling/jre21-pojav.zip -o /tmp/jre21-pojav.zip
+          unzip -oq /tmp/jre21-pojav.zip -d app_pojavlauncher/src/main/assets/components/jre-21
 
       - uses: gradle/actions/setup-gradle@v4
         with:
